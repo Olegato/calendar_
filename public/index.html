@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <title>Todo.js</title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="css/app.css">
+    </head>
+
+    <body>
+        <main>
+            <div class="toolbar">
+                   <div class="toggle">
+                   <div class="toggle__option">week</div>
+                   <div class="toggle__option toggle__option--selected">month</div>
+                   </div>
+                   <div class="current-month">June 2016</div>
+                   <div class="search-input">
+                         <input type="text" value="What are you looking for?">
+                         <i class="fa fa-search"></i>
+                       </div>
+                     </div>
+                     <div class="calendar">
+                       <div class="calendar__header">
+                         <div>Пн</div>
+                         <div>Вт</div>
+                         <div>Ср</div>
+                         <div>Чт</div>
+                         <div>Пт</div>
+                         <div>Сб</div>
+                         <div>Вс</div>
+                       </div>
+                       <div class="calendar__week">
+                         <div class="day">1
+                           <div class="somediv">
+                           <h3>test</h3>
+                           <p>Tsst2</p>
+                          </div>
+                         </div>
+                         <div class="day">2</div>
+                         <div class="day">3</div>
+                         <div class="day">4</div>
+                         <div class="day">5</div>
+                         <div class="day">6</div>
+                         <div class="day">7</div>
+                       </div>
+                       <div class="calendar__week">
+                         <div class="day">8</div>
+                         <div class="day">9</div>
+                         <div class="day">10</div>
+                         <div class="day">11</div>
+                         <div class="day">12</div>
+                         <div class="day">13</div>
+                         <div class="day">14</div>        
+                       </div>
+                       <div class="calendar__week">
+                         <div class="day">15</div>
+                         <div class="day">16</div>
+                         <div class="day">17</div>
+                         <div class="day">18</div>
+                         <div class="day">19</div>
+                         <div class="day">20</div>
+                         <div class="day">21</div>    
+                       </div>
+                       <div class="calendar__week">
+                         <div class="day">22</div>
+                         <div class="day">23</div>
+                         <div class="day">24</div>
+                         <div class="day">25</div>
+                         <div class="day">26</div> 
+                         <div class="day">27</div> 
+                         <div class="day">28</div> 
+                       </div>
+                       <div class="calendar__week">
+                       <div class="day">29</div>
+                         <div class="day">30</div>
+                         <div class="day">31</div>
+                         <div class="day">1</div>
+                         <div class="day">2</div>
+                         <div class="day">3</div>
+                         <div class="day">4</div>
+                       </div>
+                     </div>
+                   </main>
+   
+   <form class="frm" id="form">
+        <input id='event' type='text' placeholder='События'>
+        <input id='date' type='text' placeholder='Дата'>
+        <input id='members' type='text' placeholder='Имена участников'>
+        <textarea class='txt' id = 'textyo' placeholder='Описание'></textarea>
+        <button id='add' type='submit'>Готово</button>
+        <button id='clear' type='reset'>Отменить</button>
+      </form>
+   
+   <form class="frm" id="b">
+     <h2>Something event</h2>
+     <p>Something date</p>
+     <p>
+       Участники: <br>
+       I, Petr, Sanya
+     </p>
+     <textarea class='txt' placeholder='Описание'></textarea>
+     <button id='add' type='submit'>Готово</button>
+     <button id='clear' type='reset'>Отменить</button>
+   </form>  
+        
+   <script src="js/app.js"></script>
+    </body>
+</html>

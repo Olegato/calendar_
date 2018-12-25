@@ -1,0 +1,190 @@
+  
+  /* MAIN */
+
+  *,
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+  
+  .toolbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }  
+  .calendar__week,
+  .calendar__header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);  
+  }
+  .calendar__week {
+    grid-auto-rows: 100px;
+    text-align: right;
+  }
+  
+  .calendar__header {
+  grid-auto-rows: 50px;
+  align-items: center;
+  text-align: center;
+  }
+  
+  .day {
+  padding: 5px;
+  }
+  /* COSMETIC STYLING */
+  
+  :root {
+   --red: #ED5454;
+  }
+  
+  body {
+  font-family: Montserrat;
+  font-weight: 100;
+  }
+    
+  main {
+  background-color: #FCFBFC;
+  margin: 50px;
+  }
+  
+  .calendar {
+  background-color: white;
+  border: 1px solid #e1e1e1;
+  }
+  
+  .calendar__header > div {
+  text-transform: uppercase;
+  font-size: 0.8em;
+  font-weight: bold;
+  }
+  
+  .day {
+  border-right: 1px solid #e1e1e1;
+  border-top: 1px solid #e1e1e1;
+  }
+  
+  .day:last-child {
+  border-right: 0;
+  }
+  
+  .toggle{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  border: 2px solid red;
+
+  text-align: center;
+  font-size: 0.9em;
+  }
+  .toggle__option{
+    padding: 16px;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    text-transform: capitalize;
+    cursor: pointer;
+  } 
+  .toggle__option:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .toggle__option:last-child {
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .toggle__option--selected{
+  border-color: white;
+  background-color: white;
+  color: var(--red);
+  font-weight: 500;
+  box-shadow: 1px 2px 30px -5px var(--red);
+  }
+
+ .day:hover{
+  background-color:rgb(226,239,248);
+  border: 1px solid rgb(131,188,236);
+}
+
+/* form */
+
+.frm {
+  border: 1px solid #c6c7cc;
+  border-radius: 5px;
+  width: 320px;
+  padding: 20px;
+  float: left;
+  margin: 20px;
+  position: absolute;
+  margin-left: 180px;
+  margin-top: -20px;
+  background-color: white;
+  overflow:hidden;
+}
+
+#form{
+  position: absolute;
+  margin-left: 180px;
+  margin-top: -20px;
+  background-color: white;
+  overflow:hidden;
+}
+
+.invise{
+  display: none;
+}
+
+#event,
+#date,
+#members,
+.txt{
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+#txt{
+  margin-top: 40px;
+  margin-bottom: 25px;
+}
+
+.frm button{
+  margin-right: 5px;
+  border-radius: 5px;
+  background: white;
+    cursor: pointer;
+}
+
+input{
+  padding: 5px;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+
+  opacity: 0.5; /* Firefox */
+}
+ 
+/* чтобы placeholder пропадал при клике */
+input:focus::-webkit-input-placeholder { color:transparent; }
+input:focus:-moz-placeholder { color:transparent; } /* FF 4-18 */
+input:focus::-moz-placeholder { color:transparent; } /* FF 19+ */
+input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
+
+.b-popup{
+  margin: 300px;
+  overflow:hidden;
+  position:absolute;
+  top:0px;
+}
+
+#wow{
+  border: 1px solid red;
+  width: 50px;
+  float: left;
+  overflow:hidden;
+}
+
