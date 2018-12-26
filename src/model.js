@@ -8,8 +8,9 @@ class Model extends EventEmitter {
   }
 
   addItem(item) {
+    console.log('item from model.addItem', item);
     this.items.push(item);
-    return 'item';
+    return item;
   }
 }
 

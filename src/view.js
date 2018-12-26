@@ -26,13 +26,15 @@ class View extends EventEmitter {
       this.day[a].appendChild(this.form);
       // this.day[a].insertAdjacentElement('afterend', this.form);
 
-      console.log(this.form);
+      // console.log(this.form);
     } else {
       item.classList.remove('invise');
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   createItem(item) {
+    console.log('item from view.createItem --- ', item);
     const first = createElement('h2', { className: 'eve' }, item.title[0]);
     const second = createElement('p', { className: 'dt' }, item.title[1]);
     const third = createElement('p', { className: 'party' }, item.title[2]);
@@ -43,7 +45,7 @@ class View extends EventEmitter {
       first,
       second,
       third,
-      fourth
+      fourth,
     );
     return total;
   }
@@ -52,6 +54,7 @@ class View extends EventEmitter {
     event.preventDefault();
 
     const value = [this.eve.value, this.date.value, this.members.value, this.desc.value];
+    console.log('value from view.handleAdd --- ', value);
     this.emit('add', value);
     this.form.classList.add('invise');
   }
