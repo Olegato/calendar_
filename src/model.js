@@ -9,7 +9,7 @@ class Model extends EventEmitter {
 
   addItem(item) {
     this.items.push(item);
-    return 'item';
+    return item;
   }
 }
 
