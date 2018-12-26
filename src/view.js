@@ -18,7 +18,12 @@ class View extends EventEmitter {
     this.form.addEventListener('submit', this.handleAdd.bind(this)); // разобрать
   }
 
-  handleShow(a) {
+  handleShow(a, event) {
+    // Если кликнули не по дню - уходим с обработчика
+    const isNotDay = !event.target.classList.contains('day');
+    if (isNotDay) return;
+    // console.log(event);
+
     const dayId = this.day[a].id;
     const item = this.day[a].querySelector(`[data-id="${dayId}"]`);
     if (!item) {
@@ -43,7 +48,7 @@ class View extends EventEmitter {
       first,
       second,
       third,
-      fourth
+      fourth,
     );
     return total;
   }
@@ -54,6 +59,12 @@ class View extends EventEmitter {
     const value = [this.eve.value, this.date.value, this.members.value, this.desc.value];
     this.emit('add', value);
     this.form.classList.add('invise');
+    this.clearForm();
+  }
+
+  // Метод для очистки формы
+  clearForm() {
+    this.form.reset();
   }
 
   addItem(item) {
