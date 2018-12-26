@@ -1,16 +1,16 @@
-import {EventEmitter} from './helpers'
+import { EventEmitter } from './helpers';
 
-class Model extends EventEmitter{
-    constructor (items = []){
-        super();
-        this.items = items;
-    }
+class Model extends EventEmitter {
+  constructor(items = []) {
+    super();
 
-    addItem(item){
-        this.items.push(item);
-        return item
-    }
-    
+    this.items = items;
+  }
+
+  addItem(item) {
+    this.items.push(item);
+    return 'item';
+  }
 }
 
 export default Model;
