@@ -46,10 +46,13 @@ class View extends EventEmitter {
       fourth
     );
     return total;
+    
   }
 
   handleAdd(event) {
     event.preventDefault();
+
+    
 
     const value = [this.eve.value, this.date.value, this.members.value, this.desc.value];
     this.emit('add', value);
