@@ -10,7 +10,7 @@ class View extends EventEmitter {
     this.members = document.getElementById('members');
     this.desc = document.getElementById('textyo');
     this.day = document.getElementsByClassName('day');
-
+    this.currentDate = document.querySelector('.current-month');
     for (let i = 0; i < this.day.length; i++) {
       this.day[i].addEventListener('click', this.handleShow.bind(this, i));
     }
@@ -20,12 +20,39 @@ class View extends EventEmitter {
     window.onload = this.filling();
   }
 
+//Заполняет календарь
+
   filling(){
-    //this.day[0].innerHTML = '0ddddddddddddd';
-    
+     
+    this.currentDate.innerHTML = this.currentYear();
      for (let i = 0; i < this.day.length; i++){
-       this.day[i].innerHTML = `Тестовое заполнение и ${i}`;
+       this.day[i].innerHTML = `0`;
      }
+  }
+
+  
+  //Вовзращает текущий месяц и год
+  currentYear(){
+  const today = new Date;
+  const Month = today.getMonth();
+  let currentMonth = '';
+  switch (Month)
+ {
+  case 0: currentMonth="January"; break;
+  case 1: currentMonth="February"; break;
+  case 2: currentMonth="March"; break;
+  case 3: currentMonth="April"; break;
+  case 4: currentMonth="May"; break;
+  case 5: currentMonth="June"; break;
+  case 6: currentMonth="July"; break;
+  case 7: currentMonth="August"; break;
+  case 8: currentMonth="September"; break;
+  case 9: currentMonth="October"; break;
+  case 10: currentMonth="November"; break;
+  case 11: currentMonth="December"; break;
+}
+
+   return `${currentMonth} ${today.getFullYear()}`
   }
 
   handleShow(a) {
