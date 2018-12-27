@@ -28,6 +28,10 @@
   }
   /* COSMETIC STYLING */
   
+.today{
+  border: 1px solid red;
+}
+
   :root {
    --red: #ED5454;
   }
