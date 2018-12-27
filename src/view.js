@@ -37,6 +37,7 @@ class View extends EventEmitter {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   createItem(item) {
     const first = createElement('h2', { className: 'eve' }, item.title[0]);
     const second = createElement('p', { className: 'dt' }, item.title[1]);
@@ -58,6 +59,25 @@ class View extends EventEmitter {
 
     const value = [this.eve.value, this.date.value, this.members.value, this.desc.value];
     this.emit('add', value);
+
+    // так происходит запись в хранилище
+    // ключ key берём из data-key="29/12/2018/4"
+    this.emit('setEventOfDay',
+      {
+        key: event.target.parentNode.dataset.key,
+        event: {
+          id: Date.now(),
+          eventName: this.eve.value,
+          eventDate: this.date.value,
+          members: this.members.value,
+          description: this.desc.value,
+        },
+      });
+
+    // так читаем список событий из хранилища
+    this.emit('getAllEventsOfDay', event.target.parentNode.dataset.key);
+
+
     this.form.classList.add('invise');
     this.clearForm();
   }
