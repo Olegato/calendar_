@@ -16,6 +16,16 @@ class View extends EventEmitter {
     }
 
     this.form.addEventListener('submit', this.handleAdd.bind(this)); // разобрать
+
+    window.onload = this.filling();
+  }
+
+  filling(){
+    //this.day[0].innerHTML = '0ddddddddddddd';
+    
+     for (let i = 0; i < this.day.length; i++){
+       this.day[i].innerHTML = `Тестовое заполнение и ${i}`;
+     }
   }
 
   handleShow(a) {
@@ -61,7 +71,6 @@ class View extends EventEmitter {
 
   addItem(item) {
     const items = this.createItem(item);
-    // const items2 = this.createItem2(item);
     const parentForm = this.form.parentNode;
 
     parentForm.appendChild(items);
