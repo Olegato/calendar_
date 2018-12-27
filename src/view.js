@@ -33,7 +33,7 @@ class View extends EventEmitter {
     const item = this.day[a].querySelector(`[data-id="${dayId}"]`);
     if (!item) {
       this.form.classList.remove('invise');
-      this.day[a].appendChild(this.form);
+      this.day[a].appendChild(this.form); 
       // this.day[a].insertAdjacentElement('afterend', this.form);
 
       console.log(this.form);
