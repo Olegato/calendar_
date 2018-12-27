@@ -17,9 +17,9 @@ class View extends EventEmitter {
 
     this.form.addEventListener('submit', this.handleAdd.bind(this)); // разобрать
 
-    window.onload = this.Calendar2("calendar2", new Date().getFullYear(), new Date().getMonth());
-    
-    console.log(day);
+    window.onload = this.Calendar2('calendar2', new Date().getFullYear(), new Date().getMonth());
+
+    console.log(this.day);
   }
 
   handleShow(a, event) {
@@ -32,7 +32,7 @@ class View extends EventEmitter {
     const item = this.day[a].querySelector(`[data-id="${dayId}"]`);
     if (!item) {
       this.form.classList.remove('invise');
-      this.day[a].appendChild(this.form); 
+      this.day[a].appendChild(this.form);
       // this.day[a].insertAdjacentElement('afterend', this.form);
 
       console.log(this.form);
@@ -56,13 +56,11 @@ class View extends EventEmitter {
       fourth,
     );
     return total;
-    
   }
 
   handleAdd(event) {
     event.preventDefault();
 
-    
 
     const value = [this.eve.value, this.date.value, this.members.value, this.desc.value];
     this.emit('add', value);
@@ -103,38 +101,45 @@ class View extends EventEmitter {
   }
 
   Calendar2(id, year, month1) {
-    let Dlast = new Date(year,month1+1,0).getDate(), //  получаем сколько дней в месяце
-        D = new Date(year,month1,Dlast), //последний день в текущем месяце
-        DNlast = new Date(D.getFullYear(),D.getMonth(),Dlast).getDay(), //день недели последнего дня в месяце
-        DNfirst = new Date(D.getFullYear(),D.getMonth(),1).getDay(), //день недели первого дня в месяце
-        calendar = '<tr>',
-        month12=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
-        //console.log(DNfirst);
-        //console.log(DNfirst);
+    const Dlast = new Date(year, month1 + 1, 0).getDate();
+    //  получаем сколько дней в месяце
+
+    const D = new Date(year, month1, Dlast);
+    // последний день в текущем месяце
+
+    const DNlast = new Date(D.getFullYear(), D.getMonth(), Dlast).getDay();
+    // день недели последнего дня в месяце
+
+    const DNfirst = new Date(D.getFullYear(), D.getMonth(), 1).getDay();
+    // день недели первого дня в месяце
+
+    let calendar = '<tr>';
+
+
+    const month12 = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+    // console.log(DNfirst);
+    // console.log(DNfirst);
     if (DNfirst != 0) {
-      for(let  i = 1; i < DNfirst; i++) calendar += '<td>';
-    }else{
-      for(let  i = 0; i < 6; i++) calendar += '<td>';
+      for (let i = 1; i < DNfirst; i++) calendar += '<td>';
+    } else {
+      for (let i = 0; i < 6; i++) calendar += '<td>';
     }
-    for(let  i = 1; i <= Dlast; i++) {
+    for (let i = 1; i <= Dlast; i++) {
       if (i == new Date().getDate() && D.getFullYear() == new Date().getFullYear() && D.getMonth() == new Date().getMonth()) {
-        calendar += `<td class="today">'${i}`; 
-      }else{
+        calendar += `<td class="today">'${i}`;
+      } else {
         calendar += `<td class="day">${i}`;
       }
-      if (new Date(D.getFullYear(),D.getMonth(),i).getDay() == 0) {
+      if (new Date(D.getFullYear(), D.getMonth(), i).getDay() == 0) {
         calendar += '<tr>';
       }
     }
-    for(let  i = DNlast; i < 7; i++) calendar += '<td>&nbsp;';
+    for (let i = DNlast; i < 7; i++) calendar += '<td>&nbsp;';
     document.querySelector(`#${id} tbody`).innerHTML = calendar;
     this.currentDate.innerHTML = `${month12[D.getMonth()]} ${D.getFullYear()}`;
     document.querySelector(`#${id} thead td:nth-child(2)`).dataset.month1 = D.getMonth();
     document.querySelector(`#${id} thead td:nth-child(2)`).dataset.year = D.getFullYear();
-  
-    }
-
-  
+  }
 }
 
 export default View;
