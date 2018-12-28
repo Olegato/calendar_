@@ -87,9 +87,13 @@ class View extends EventEmitter {
     }
     for(let  i = 1; i <= Dlast; i++) {
       if (i == new Date().getDate() && D.getFullYear() == new Date().getFullYear() && D.getMonth() == new Date().getMonth()) {
-        calendar += `<td class="today">'${i}`; 
+        calendar += `<td class="today" [data-key="${i}"]>'${i} `; 
       }else{
-        calendar += `<td class="day">${i}`;
+        let day = new Date(D.getFullYear(),D.getMonth(),i).getDay();
+        if(day == 0){
+          day = 7;
+        } 
+        calendar += `<td class="day" [data-key="${i}/${D.getMonth()}/${D.getFullYear()}/${day}"]>${i}`;
       }
       if (new Date(D.getFullYear(),D.getMonth(),i).getDay() == 0) {
         calendar += '<tr>';
