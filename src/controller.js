@@ -4,6 +4,8 @@ class Controller {
     this.view = view;
 
     view.on('add', this.addTodo.bind(this));
+    view.on('setEventOfDay', this.model.setEventOfDay);
+    view.on('getAllEventsOfDay', this.getEvents.bind(this));
   }
 
   addTodo(title) {
@@ -14,6 +16,12 @@ class Controller {
     });
 
     this.view.addItem(item);
+  }
+
+  // TODO: написать этот метод
+  getEvents(query) {
+    const events = this.model.getAllEventsOfDay(query);
+    console.log(query, events);
   }
 }
 
