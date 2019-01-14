@@ -1,5 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { EventEmitter } from './helpers';
+import contract from './contract';
 
 // служебная функция
 // проверяет формат строки запроса
@@ -21,6 +22,8 @@ class Model extends EventEmitter {
     super();
     this.items = items;
     modelThis = this; // записал ссылку на this
+
+    this.month = contract;
   }
 
   addItem(item) {
