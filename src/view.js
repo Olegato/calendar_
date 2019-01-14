@@ -13,11 +13,12 @@ class View extends EventEmitter {
     this.nextButton = document.getElementById('next');
     this.desc = document.getElementById('textyo');
     this.currentDate = document.querySelector('.current-month');
-    
 
     window.onload = this.calendar2('calendar2', new Date().getFullYear(), new Date().getMonth());
 
     this.dayEvent();
+
+    this.info = document.querySelectorAll('.info');
 
     this.form.addEventListener('submit', this.handleAdd.bind(this));
   }
@@ -56,12 +57,16 @@ class View extends EventEmitter {
       fourth
     );
     return total;
-    
+  }
+
+  createDiv(item){
+    const first = createElement('p', {}, item.title[0]);
+    return first;
   }
 
   handleAdd(event) {
     event.preventDefault();
-    
+
     const value = [this.eve.value, this.date.value, this.members.value, this.desc.value];
     this.emit('add', value);
     this.form.classList.add('invise');
@@ -79,19 +84,19 @@ class View extends EventEmitter {
     let Dlast = new Date(year, month1 + 1, 0).getDate();
  //  получаем сколько дней в месяце
         
-let D = new Date(year,month1,Dlast);
+    let D = new Date(year,month1,Dlast);
  //последний день в текущем месяце
         
-let DNlast = new Date(D.getFullYear(),D.getMonth(),Dlast).getDay();
+    let DNlast = new Date(D.getFullYear(),D.getMonth(),Dlast).getDay();
  //день недели последнего дня в месяце
         
-let DNfirst = new Date(D.getFullYear(),D.getMonth(),1).getDay();
+    let DNfirst = new Date(D.getFullYear(),D.getMonth(),1).getDay();
  //день недели первого дня в месяце
         
 let calendar = '<tr>';
 
         
-let month12 = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+  let month12 = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
     if (DNfirst != 0) {
       for (let i = 1; i < DNfirst; i++) calendar += '<td>';
     } else {
@@ -103,9 +108,9 @@ let month12 = ['Январь', 'Февраль', 'Март', 'Апрель', 'М
         day = 7;
       }
       if (i == new Date().getDate() && D.getFullYear() == new Date().getFullYear() && D.getMonth() == new Date().getMonth()) {
-        calendar += `<td class="day today" data-key="${i}/${D.getMonth()}/${D.getFullYear()}/${day}">${i}`;
+        calendar += `<td class="day today" data-key="${i}/${D.getMonth()}/${D.getFullYear()}/${day}">${i} <div class="info">`;
       }else {
-        calendar += `<td class="day" data-key="${i}/${D.getMonth()}/${D.getFullYear()}/${day}">${i}`;
+        calendar += `<td class="day" data-key="${i}/${D.getMonth()}/${D.getFullYear()}/${day}">${i} <div class="info">`;
       }
       if (day == 7) {
         calendar += '<tr>';
