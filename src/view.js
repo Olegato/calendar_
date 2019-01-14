@@ -4,6 +4,7 @@ class View extends EventEmitter {
   constructor() {
     super();
 
+
     this.form = document.getElementById('form');
     this.eve = document.getElementById('event');
     this.date = document.getElementById('date');
@@ -11,16 +12,21 @@ class View extends EventEmitter {
     this.prevButton = document.getElementById('prev');
     this.nextButton = document.getElementById('next');
     this.desc = document.getElementById('textyo');
-    //this.day = document.getElementsByClassName('day');
     this.currentDate = document.querySelector('.current-month');
-    // for (let i = 0; i < this.day.length; i++) {
-      // this.day[i].addEventListener('click', this.handleShow.bind(this, i));
-    // }
-    //this.prevButton.addEventListener('click',this.calendar2.bind(this, "calendar2", document.querySelector('#calendar2 thead td:nth-child(2)').dataset.year, parseFloat(document.querySelector('#calendar2 thead td:nth-child(2)').dataset.month)-1));
-    //this.nextButton.addEventListener('click',this.calendar2.bind(this));
-    this.form.addEventListener('submit', this.handleAdd.bind(this)); // разобрать
+    
 
-    window.onload = this.calendar2("calendar2", new Date().getFullYear(), new Date().getMonth());
+    window.onload = this.calendar2('calendar2', new Date().getFullYear(), new Date().getMonth());
+
+    this.day = document.getElementsByClassName('day');
+    for (let i = 0; i < this.day.length; i++) {
+     this.day[i].addEventListener('click', this.handleShow.bind(this, i));
+    }
+
+  
+
+    this.prevButton.addEventListener('click',this.calendar2.bind(this, "calendar2", this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)-1));
+    this.nextButton.addEventListener('click',this.calendar2.bind(this, "calendar2", this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)+1));
+    this.form.addEventListener('submit', this.handleAdd.bind(this)); // разобрать
   }
 
   handleShow(a) {
@@ -73,41 +79,48 @@ class View extends EventEmitter {
   }
 
   calendar2(id, year, month1) {
-    let Dlast = new Date(year,month1+1,0).getDate(), //  получаем сколько дней в месяце
-        D = new Date(year,month1,Dlast), //последний день в текущем месяце
-        DNlast = new Date(D.getFullYear(),D.getMonth(),Dlast).getDay(), //день недели последнего дня в месяце
-        DNfirst = new Date(D.getFullYear(),D.getMonth(),1).getDay(), //день недели первого дня в месяце
-        calendar = '<tr>',
-        month12=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
-        //console.log(DNfirst);
-        //console.log(DNfirst);
+    let Dlast = new Date(year, month1 + 1, 0).getDate();
+ //  получаем сколько дней в месяце
+        
+let D = new Date(year,month1,Dlast);
+ //последний день в текущем месяце
+        
+let DNlast = new Date(D.getFullYear(),D.getMonth(),Dlast).getDay();
+ //день недели последнего дня в месяце
+        
+let DNfirst = new Date(D.getFullYear(),D.getMonth(),1).getDay();
+ //день недели первого дня в месяце
+        
+let calendar = '<tr>';
+
+        
+let month12 = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
     if (DNfirst != 0) {
-      for(let  i = 1; i < DNfirst; i++) calendar += '<td>';
-    }else{
-      for(let  i = 0; i < 6; i++) calendar += '<td>';
+      for (let i = 1; i < DNfirst; i++) calendar += '<td>';
+    } else {
+      for (let i = 0; i < 6; i++) calendar += '<td>';
     }
-    for(let  i = 1; i <= Dlast; i++) {
-      let day = new Date(D.getFullYear(),D.getMonth(),i).getDay();
-        if(day == 0){
-          day = 7;
-        }
+    for (let i = 1; i <= Dlast; i++) {
+      let day = new Date(D.getFullYear(), D.getMonth(), i).getDay(); //(2019, 1, 1) - 2(вторник)
+      if (day == 0) {
+        day = 7;
+      }
       if (i == new Date().getDate() && D.getFullYear() == new Date().getFullYear() && D.getMonth() == new Date().getMonth()) {
-        calendar += `<td class="day today" data-key="${i}/${D.getMonth()}/${D.getFullYear()}/${day}">${i}`; 
-      }else{
+        calendar += `<td class="day today" data-key="${i}/${D.getMonth()}/${D.getFullYear()}/${day}">${i}`;
+      }else {
         calendar += `<td class="day" data-key="${i}/${D.getMonth()}/${D.getFullYear()}/${day}">${i}`;
       }
-      if (new Date(D.getFullYear(),D.getMonth(),i).getDay() == 0) {
+      if (day == 7) {
         calendar += '<tr>';
       }
     }
-    for(let  i = DNlast; i < 7; i++) calendar += '<td>&nbsp;';
+    for (let i = DNlast; i < 7; i++) calendar += '<td>&nbsp;';
     document.querySelector(`#${id} tbody`).innerHTML = calendar;
     this.currentDate.innerHTML = `${month12[D.getMonth()]} ${D.getFullYear()}`;
-    document.querySelector(`#${id} thead td:nth-child(2)`).dataset.month1 = D.getMonth();
-    document.querySelector(`#${id} thead td:nth-child(2)`).dataset.year = D.getFullYear();
-  
-    }
-
+    this.currentDate.dataset.month = month1;
+    this.currentDate.dataset.year = year;
+    console.log(this.currentDate.dataset.month);
+  }
   
 }
 
