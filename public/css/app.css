@@ -25,8 +25,17 @@
   border: 1px solid #e1e1e1;
   height: 100px;
   width: 14%;
+  vertical-align: top;
   }
   /* COSMETIC STYLING */
+
+  .info p:first-child{
+    font-weight: bold;
+  }
+
+  .info p:last-child{
+    margin-bottom: 0;
+  }
   
 .today{
   border: 1px solid red;
@@ -167,3 +176,4 @@ input:focus:-ms-input-placeholder { color:transparent; } /* IE 10+ */
   position:absolute;
   top:0px;
 }
+

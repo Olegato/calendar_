@@ -16,7 +16,6 @@ class Controller {
     });
 
     this.view.addItem(item);
-    console.log(item);
   }
 
   // TODO: написать этот метод
