@@ -59,7 +59,7 @@ class Model extends EventEmitter {
  */
   getEventOfDayById(queryString, id) {
     const events = modelThis.getAllEventsOfDay(queryString);
-    const eventById = events.filter(event => event.id === id);
+    const eventById = events.find(event => event.id === id);
     return eventById;
   }
 
