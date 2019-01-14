@@ -83,6 +83,7 @@ class View extends EventEmitter {
   addItem(item) {
     const items = this.createItem(item);
     const parentForm = this.form.parentNode;
+    //Добавляем значения из формы в day
     const values = parentForm.querySelectorAll('.info p');
      for(let i = 0; i < values.length; i++){
        values[i].innerHTML = item.title[i]
@@ -91,6 +92,14 @@ class View extends EventEmitter {
     parentForm.appendChild(items);
     parentForm.id = item.id;
   }
+
+  /**
+   * Метод для создания календаря
+   * 
+   * @param {*} id id таблицы для календаря
+   * @param {*} year год в календаре
+   * @param {*} month1 месяц в календаре
+   */
 
   createCalendar(id, year, month1) {
     let Dlast = new Date(year, month1 + 1, 0).getDate();
@@ -125,9 +134,16 @@ class View extends EventEmitter {
     this.currentDate.dataset.month = month1;
     this.currentDate.dataset.year = year;
 
-    this.nextButton.addEventListener('click',this.createCalendar.bind(this, "calendar2", this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)+1));
-    this.prevButton.addEventListener('click',this.createCalendar.bind(this, "calendar2", this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)-1));
+    this.buttonsEvent();
     this.dayEvent();
+  }
+
+  //Вешаем обработчик на кнопки для переключения месяцев
+  buttonsEvent(){
+    this.nextButton.addEventListener('click',this.createCalendar.bind(this, "calendar2",
+    this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)+1));
+    this.prevButton.addEventListener('click',this.createCalendar.bind(this, "calendar2",
+    this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)-1));
   }
   
 }
