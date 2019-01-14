@@ -28,6 +28,14 @@
   vertical-align: top;
   }
   /* COSMETIC STYLING */
+
+  .info p:first-child{
+    font-weight: bold;
+  }
+
+  .info p:last-child{
+    margin-bottom: 0;
+  }
   
 .today{
   border: 1px solid red;

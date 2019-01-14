@@ -14,7 +14,7 @@ class View extends EventEmitter {
     this.desc = document.getElementById('textyo');
     this.currentDate = document.querySelector('.current-month');
 
-    window.onload = this.calendar2('calendar2', new Date().getFullYear(), new Date().getMonth());
+    window.onload = this.createCalendar('calendar2', new Date().getFullYear(), new Date().getMonth());
 
     this.dayEvent();
 
@@ -31,13 +31,19 @@ class View extends EventEmitter {
     } 
   }
 
-  handleShow(a) {
+  handleShow(a, event) {
+    // Если кликнули не по дню - уходим с обработчика
+    const isNotDay = !event.target.classList.contains('day');
+   
+    if (isNotDay) return;
+
     const dayId = this.day[a].id;
     const item = this.day[a].querySelector(`[data-id="${dayId}"]`);
     if (!item) {
       this.form.classList.remove('invise');
-      this.day[a].appendChild(this.form); 
+      this.day[a].appendChild(this.form);
       // this.day[a].insertAdjacentElement('afterend', this.form);
+
     } else {
       item.classList.remove('invise');
     }
@@ -47,21 +53,23 @@ class View extends EventEmitter {
     const first = createElement('h2', { className: 'eve' }, item.title[0]);
     const second = createElement('p', { className: 'dt' }, item.title[1]);
     const third = createElement('p', { className: 'party' }, item.title[2]);
-    const fourth = createElement('textarea', { className: 'txt' }, item.title[3]);
+    const fourth = createElement('p', { className: 'txt' }, item.title[3]);
+    const button = createElement('button', { className: 'but' }, 'Готово');
     const total = createElement(
       'form',
       { className: 'frm invise', 'data-id': item.id },
       first,
       second,
       third,
-      fourth
+      fourth,
+      button,
     );
-    return total;
-  }
 
-  createDiv(item){
-    const first = createElement('p', {}, item.title[0]);
-    return first;
+    button.addEventListener('click', function(){
+      event.preventDefault();
+      total.classList.add('invise');
+    })
+    return total;
   }
 
   handleAdd(event) {
@@ -75,26 +83,21 @@ class View extends EventEmitter {
   addItem(item) {
     const items = this.createItem(item);
     const parentForm = this.form.parentNode;
+    const values = parentForm.querySelectorAll('.info p');
+     for(let i = 0; i < values.length; i++){
+       values[i].innerHTML = item.title[i]
+     }
 
     parentForm.appendChild(items);
     parentForm.id = item.id;
   }
 
-  calendar2(id, year, month1) {
+  createCalendar(id, year, month1) {
     let Dlast = new Date(year, month1 + 1, 0).getDate();
- //  получаем сколько дней в месяце
-        
     let D = new Date(year,month1,Dlast);
- //последний день в текущем месяце
-        
     let DNlast = new Date(D.getFullYear(),D.getMonth(),Dlast).getDay();
- //день недели последнего дня в месяце
-        
     let DNfirst = new Date(D.getFullYear(),D.getMonth(),1).getDay();
- //день недели первого дня в месяце
-        
-let calendar = '<tr>';
-
+    let calendar = '<tr>';
         
   let month12 = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
     if (DNfirst != 0) {
@@ -103,14 +106,14 @@ let calendar = '<tr>';
       for (let i = 0; i < 6; i++) calendar += '<td>';
     }
     for (let i = 1; i <= Dlast; i++) {
-      let day = new Date(D.getFullYear(), D.getMonth(), i).getDay(); //(2019, 1, 1) - 2(вторник)
+      let day = new Date(D.getFullYear(), D.getMonth(), i).getDay();
       if (day == 0) {
         day = 7;
       }
       if (i == new Date().getDate() && D.getFullYear() == new Date().getFullYear() && D.getMonth() == new Date().getMonth()) {
-        calendar += `<td class="day today" data-key="${i}/${D.getMonth()}/${D.getFullYear()}/${day}">${i} <div class="info">`;
+        calendar += `<td class="day today" data-key="${i}/${D.getMonth()}/${D.getFullYear()}/${day}">${i} <div class="info"> <p><p>`;
       }else {
-        calendar += `<td class="day" data-key="${i}/${D.getMonth()}/${D.getFullYear()}/${day}">${i} <div class="info">`;
+        calendar += `<td class="day" data-key="${i}/${D.getMonth()}/${D.getFullYear()}/${day}">${i} <div class="info"> <p><p>`;
       }
       if (day == 7) {
         calendar += '<tr>';
@@ -122,8 +125,8 @@ let calendar = '<tr>';
     this.currentDate.dataset.month = month1;
     this.currentDate.dataset.year = year;
 
-    this.nextButton.addEventListener('click',this.calendar2.bind(this, "calendar2", this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)+1));
-    this.prevButton.addEventListener('click',this.calendar2.bind(this, "calendar2", this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)-1));
+    this.nextButton.addEventListener('click',this.createCalendar.bind(this, "calendar2", this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)+1));
+    this.prevButton.addEventListener('click',this.createCalendar.bind(this, "calendar2", this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)-1));
     this.dayEvent();
   }
   
