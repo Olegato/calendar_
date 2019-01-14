@@ -17,16 +17,17 @@ class View extends EventEmitter {
 
     window.onload = this.calendar2('calendar2', new Date().getFullYear(), new Date().getMonth());
 
+    this.dayEvent();
+
+    this.form.addEventListener('submit', this.handleAdd.bind(this));
+  }
+
+  //вешает обработчик на дни
+  dayEvent(){
     this.day = document.getElementsByClassName('day');
     for (let i = 0; i < this.day.length; i++) {
      this.day[i].addEventListener('click', this.handleShow.bind(this, i));
-    }
-
-  
-
-    this.prevButton.addEventListener('click',this.calendar2.bind(this, "calendar2", this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)-1));
-    this.nextButton.addEventListener('click',this.calendar2.bind(this, "calendar2", this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)+1));
-    this.form.addEventListener('submit', this.handleAdd.bind(this)); // разобрать
+    } 
   }
 
   handleShow(a) {
@@ -36,8 +37,6 @@ class View extends EventEmitter {
       this.form.classList.remove('invise');
       this.day[a].appendChild(this.form); 
       // this.day[a].insertAdjacentElement('afterend', this.form);
-
-      console.log(this.form);
     } else {
       item.classList.remove('invise');
     }
@@ -62,9 +61,7 @@ class View extends EventEmitter {
 
   handleAdd(event) {
     event.preventDefault();
-
     
-
     const value = [this.eve.value, this.date.value, this.members.value, this.desc.value];
     this.emit('add', value);
     this.form.classList.add('invise');
@@ -119,7 +116,10 @@ let month12 = ['Январь', 'Февраль', 'Март', 'Апрель', 'М
     this.currentDate.innerHTML = `${month12[D.getMonth()]} ${D.getFullYear()}`;
     this.currentDate.dataset.month = month1;
     this.currentDate.dataset.year = year;
-    console.log(this.currentDate.dataset.month);
+
+    this.nextButton.addEventListener('click',this.calendar2.bind(this, "calendar2", this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)+1));
+    this.prevButton.addEventListener('click',this.calendar2.bind(this, "calendar2", this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month)-1));
+    this.dayEvent();
   }
   
 }
