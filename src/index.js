@@ -7,6 +7,11 @@ const model = new Model();
 const view = new View();
 const controller = new Controller(model, view);
 
+console.log(model.calendarData());
+console.log(model.prevMonth());
+console.log(model.nextMonth());
+console.log(model.nextMonth());
+
 // function test() {
 //   document.getElementsByClassName('day')[0].dataset.key = '29/12/2018/4';
 //   model.setEventOfDay({ key: '27/12/2018/4', event: [{ id: Date.now(), title: 'header', body: 'some info' }] });
