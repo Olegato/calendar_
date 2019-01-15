@@ -9,19 +9,21 @@ class Controller {
     view.on('render', this.modelRender.bind(this));
   }
 
+  // FIXME: эта штука работает не правильно
   addTodo(title) {
-    const item = this.model.addItem({
+    const event = {
       id: Date.now(),
       title,
       completed: true,
-    });
+    };
 
-    this.view.addItem(item);
+    this.view.addItem(event);
   }
 
-  modelRender(){
+  modelRender() {
     const obj = this.model.calendarData();
-    this.view.createCalendarModel(obj);
+    console.log(obj);
+    // this.view.createCalendarModel(obj);
   }
 
   // TODO: написать этот метод
