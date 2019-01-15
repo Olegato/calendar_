@@ -1,6 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { EventEmitter } from './helpers';
-import contract from './contract';
+// import contract from './contract';
 
 // служебная функция
 // проверяет формат строки запроса
@@ -15,32 +15,7 @@ function check(queryString) {
   }
 }
 
-let modelThis = null;
-
-class Model extends EventEmitter {
-  constructor(items = []) {
-    super();
-    this.items = items;
-    modelThis = this; // записал ссылку на this
-
-    this.month = contract;
-  }
-
-  addItem(item) {
-    this.items.push(item);
-    return item;
-  }
 /**
- * Метод создает объект вида contract, вызываем его при window.onload
- * @param - необходимые параметры
- * @returns - объект вида contract
- */
-  calendarData(){
-    return obj
-  }
-
-
-  /**
    * Метод получения событий дня
    *
    * Принимает строку вида "27/12/2018/4"
@@ -49,16 +24,92 @@ class Model extends EventEmitter {
    * @returns {array} Возвращает массив событий или пустой массив
    * @memberof Model
    */
-  getAllEventsOfDay(queryString) {
-    check(queryString);
-    if (localStorage) {
-      const events = JSON.parse(localStorage.getItem(queryString));
-      if (events) {
-        return events;
-      }
+function getAllEventsOfDay(queryString) {
+  check(queryString);
+  if (localStorage) {
+    const events = JSON.parse(localStorage.getItem(queryString));
+    if (events) {
+      return events;
     }
-    return [];
   }
+  return [];
+}
+
+function getMonthsData(month, year) {
+  let iterDay = new Date(year, month - 1, 1).getDay();
+  const days = [];
+  const daysInMonth = 33 - new Date(year, month - 1, 33).getDate();
+
+  for (let i = 1; i <= daysInMonth; i += 1) {
+    days.push({
+      date: i,
+      day: iterDay,
+      events: getAllEventsOfDay(`${i}/${month}/${year}/${iterDay}`),
+    });
+
+    iterDay = (iterDay < 7) ? iterDay += 1 : 1;
+  }
+
+  return {
+    month,
+    year,
+    days,
+  };
+}
+
+
+let modelThis = null;
+
+class Model extends EventEmitter {
+  constructor() {
+    super();
+    const currentDate = new Date(Date.now());
+    modelThis = this; // записал ссылку на this
+    this.month = currentDate.getMonth() + 1;
+    this.year = currentDate.getFullYear();
+
+    this.monthData = getMonthsData(this.month, this.year);
+  }
+
+  /**
+ * Метод создает объект вида contract, вызываем его при window.onload
+ * @param - необходимые параметры
+ * @returns - объект вида contract
+ */
+  calendarData() {
+    return modelThis.monthData;
+  }
+
+  nextMonth() {
+    if (modelThis.month < 12) {
+      modelThis.month += 1;
+    } else {
+      modelThis.month = 1;
+      modelThis.year += 1;
+    }
+
+    modelThis.monthData = getMonthsData(modelThis.month, modelThis.year);
+
+    return modelThis.monthData;
+  }
+
+  prevMonth() {
+    if (modelThis.month > 1) {
+      modelThis.month -= 1;
+    } else {
+      modelThis.month = 12;
+      modelThis.year -= 1;
+    }
+
+    modelThis.monthData = getMonthsData(modelThis.month, modelThis.year);
+
+    return modelThis.monthData;
+  }
+
+  getAllEventsOfDay(queryString) {
+    return getAllEventsOfDay(queryString);
+  }
+
 
   /**
  * Получить по id одно событие дня
@@ -69,7 +120,7 @@ class Model extends EventEmitter {
  * @memberof Model
  */
   getEventOfDayById(queryString, id) {
-    const events = modelThis.getAllEventsOfDay(queryString);
+    const events = getAllEventsOfDay(queryString);
     const eventById = events.find(event => event.id === id);
     return eventById;
   }
@@ -94,7 +145,7 @@ class Model extends EventEmitter {
       // eslint-disable-next-line no-param-reassign
       delete obj.key;
       const { event } = obj;
-      const events = modelThis.getAllEventsOfDay(key);
+      const events = getAllEventsOfDay(key);
 
       events.push(event);
       localStorage.setItem(key, JSON.stringify(events));
@@ -110,7 +161,7 @@ class Model extends EventEmitter {
  * @memberof Model
  */
   updateEventOfDayById(queryString, id, newObj) {
-    const events = modelThis.getAllEventsOfDay(queryString);
+    const events = getAllEventsOfDay(queryString);
 
     for (let i = 0; i < events.length; i += 1) {
       if (events[i].id === id) {
@@ -137,7 +188,7 @@ class Model extends EventEmitter {
  * @memberof Model
  */
   deleteEventOfDayById(queryString, id) {
-    const events = modelThis.getAllEventsOfDay(queryString);
+    const events = getAllEventsOfDay(queryString);
     const newEvents = events.filter(event => event.id !== id);
     localStorage.setItem(queryString, JSON.stringify(newEvents));
   }
