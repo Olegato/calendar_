@@ -128,9 +128,9 @@ class View extends EventEmitter {
 
   createCalendar(id, year, month1) {
     const Dlast = new Date(year, month1 + 1, 0).getDate();
-    const D = new Date(year, month1, Dlast);
-    const DNlast = new Date(D.getFullYear(), D.getMonth(), Dlast).getDay();
-    const DNfirst = new Date(D.getFullYear(), D.getMonth(), 1).getDay();
+    const D = new Date(year, month1, Dlast); 
+    const DNlast = new Date(D.getFullYear(), D.getMonth(), Dlast).getDay(); 
+    const DNfirst = new Date(D.getFullYear(), D.getMonth(), 1).getDay(); 
     let calendar = '<tr>';
 
     const month12 = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
@@ -139,6 +139,7 @@ class View extends EventEmitter {
     } else {
       for (let i = 0; i < 6; i++) calendar += '<td>';
     }
+
     for (let i = 1; i <= Dlast; i++) {
       let day = new Date(D.getFullYear(), D.getMonth(), i).getDay();
       if (day == 0) {
@@ -152,7 +153,7 @@ class View extends EventEmitter {
       if (day == 7) {
         calendar += '<tr>';
       }
-    }
+    } 
     for (let i = DNlast; i < 7; i++) calendar += '<td>&nbsp;';
     document.querySelector(`#${id} tbody`).innerHTML = calendar;
     this.currentDate.innerHTML = `${month12[D.getMonth()]} ${D.getFullYear()}`;
@@ -170,6 +171,49 @@ class View extends EventEmitter {
     this.prevButton.addEventListener('click', this.createCalendar.bind(this, 'calendar2',
       this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month) - 1));
   }
+
+
+/*
+  createCalendarModel(id, { month,year, days }) {
+    const Dlast = Object.keys(days).length;
+    
+    const DNlast = days[Dlast].day;
+    const DNfirst = days[0].day;
+    let calendar = '<tr>';
+
+    const month12 = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+    for (let i = 1; i < DNfirst; i++) calendar += '<td>';
+
+    for (let i = 1; i <= Dlast; i++) {
+      let day = days[i].day;
+      
+      if (i == new Date().getDate() && year == new Date().getFullYear() && month == new Date().getMonth()) {
+        calendar += `<td class="day today" data-key="${i}/${month}/${year}/${day}">${i} <div class="info"> <p><p>`;
+      } else {
+        calendar += `<td class="day" data-key="${i}/${month}/${year}/${day}">${i} <div class="info"> <p><p>`;
+      }
+      if (day == 7) {
+        calendar += '<tr>';
+      }
+    } 
+    for (let i = DNlast; i < 7; i++) calendar += '<td>&nbsp;';
+    document.querySelector(`#${id} tbody`).innerHTML = calendar;
+    this.currentDate.innerHTML = `${month12[month]} ${year}`;
+    this.currentDate.dataset.month = month;
+    this.currentDate.dataset.year = year;
+
+    this.buttonsEvent();
+    this.dayEvent();
+  }
+
+buttonsEvent() {
+    this.nextButton.addEventListener('click', this.createCalendar.bind(this, 'calendar2',
+      this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month) + 1));
+    this.prevButton.addEventListener('click', this.createCalendar.bind(this, 'calendar2',
+      this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month) - 1));
+  }
+*/
+  
 }
 
 export default View;
