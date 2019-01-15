@@ -6,6 +6,7 @@ class Controller {
     view.on('add', this.addTodo.bind(this));
     view.on('setEventOfDay', this.model.setEventOfDay);
     view.on('getAllEventsOfDay', this.getEvents.bind(this));
+    view.on('render', this.modelRender.bind(this));
   }
 
   addTodo(title) {
@@ -16,6 +17,11 @@ class Controller {
     });
 
     this.view.addItem(item);
+  }
+
+  modelRender(){
+    const obj = this.model.calendarData();
+    this.view.createCalendarModel(obj);
   }
 
   // TODO: написать этот метод

@@ -30,6 +30,14 @@ class Model extends EventEmitter {
     this.items.push(item);
     return item;
   }
+/**
+ * Метод создает объект вида contract, вызываем его при window.onload
+ * @param - необходимые параметры
+ * @returns - объект вида contract
+ */
+  calendarData(){
+    return obj
+  }
 
 
   /**

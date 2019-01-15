@@ -15,6 +15,7 @@ class View extends EventEmitter {
     this.currentDate = document.querySelector('.current-month');
 
     window.onload = this.createCalendar('calendar2', new Date().getFullYear(), new Date().getMonth());
+    //window.onload = this.emit('someMethod', someValue);
 
     this.dayEvent();
 
