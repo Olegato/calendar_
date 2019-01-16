@@ -39,11 +39,14 @@ function getMonthsData(month, year) {
   let iterDay = new Date(year, month - 1, 1).getDay();
   const days = [];
   const daysInMonth = 33 - new Date(year, month - 1, 33).getDate();
+  const today = new Date(Date.now());
+  const todayStr = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}/${today.getDay()}`;
 
   for (let i = 1; i <= daysInMonth; i += 1) {
     days.push({
       date: i,
       day: iterDay,
+      key: `${i}/${month}/${year}/${iterDay}`,
       events: getAllEventsOfDay(`${i}/${month}/${year}/${iterDay}`),
     });
 
@@ -54,6 +57,7 @@ function getMonthsData(month, year) {
     month,
     year,
     days,
+    today: todayStr,
   };
 }
 
