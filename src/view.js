@@ -13,16 +13,22 @@ class View extends EventEmitter {
     this.nextButton = document.getElementById('next');
     this.desc = document.getElementById('textyo');
     this.currentDate = document.querySelector('.current-month');
+    
+    //window.onload = this.createCalendar('calendar2', new Date().getFullYear(), new Date().getMonth());
 
-    window.onload = this.createCalendar('calendar2', new Date().getFullYear(), new Date().getMonth());
-    // window.onload = this.emit('someMethod', someValue);
+    window.onload = this.emit.bind(this,'render');
+  
 
     this.dayEvent();
 
     this.info = document.querySelectorAll('.info');
 
     this.form.addEventListener('submit', this.handleAdd.bind(this));
+
+    this.nextButton.addEventListener('click', this.emit.bind(this,'render', 'next'));
+    this.prevButton.addEventListener('click', this.emit.bind(this, 'render','previous'));
   }
+  
 
   // вешает обработчик на дни
   dayEvent() {
@@ -79,6 +85,7 @@ class View extends EventEmitter {
     const value = [this.eve.value, this.date.value, this.members.value, this.desc.value];
     const id = Date.now();
     const key = event.target.parentNode.dataset.key;
+    this.emit('render', 123);
     this.emit('add', value);
 
     // так происходит запись в хранилище
@@ -155,7 +162,7 @@ class View extends EventEmitter {
       }
       if (day == 7) {
         calendar += '<tr>';
-      }
+      } 
     }
     for (let i = DNlast; i < 7; i++) calendar += '<td>&nbsp;';
     document.querySelector(`#${id} tbody`).innerHTML = calendar;
@@ -163,59 +170,40 @@ class View extends EventEmitter {
     this.currentDate.dataset.month = month1;
     this.currentDate.dataset.year = year;
 
-    this.buttonsEvent();
+    //this.buttonsEvent();
     this.dayEvent();
   }
-
-  // Вешаем обработчик на кнопки для переключения месяцев
-  buttonsEvent() {
-    this.nextButton.addEventListener('click', this.createCalendar.bind(this, 'calendar2',
-      this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month) + 1));
-    this.prevButton.addEventListener('click', this.createCalendar.bind(this, 'calendar2',
-      this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month) - 1));
-  }
-
-
-  /*
-  createCalendarModel(id, { month,year, days }) {
-    const Dlast = Object.keys(days).length;
-
-    const DNlast = days[Dlast].day;
-    const DNfirst = days[0].day;
+  
+  createCalendarModel(id, obj) {
+    const Dlast = Object.keys(obj.days).length;
+    const DNlast = obj.days[Dlast - 1].day;
+    const DNfirst = obj.days[0].day;
     let calendar = '<tr>';
 
     const month12 = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
     for (let i = 1; i < DNfirst; i++) calendar += '<td>';
 
     for (let i = 1; i <= Dlast; i++) {
-      let day = days[i].day;
+      let day = obj.days[i-1].day;
 
-      if (i == new Date().getDate() && year == new Date().getFullYear() && month == new Date().getMonth()) {
-        calendar += `<td class="day today" data-key="${i}/${month}/${year}/${day}">${i} <div class="info"> <p><p>`;
+      if (i == new Date().getDate() && obj.year == new Date().getFullYear() && obj.month - 1 == new Date().getMonth()) {
+        calendar += `<td class="day today" data-key="${i}/${obj.month}/${obj.year}/${day}">${i} <div class="info"> <p><p>`;
       } else {
-        calendar += `<td class="day" data-key="${i}/${month}/${year}/${day}">${i} <div class="info"> <p><p>`;
+        calendar += `<td class="day" data-key="${i}/${obj.month}/${obj.year}/${day}">${i} <div class="info"> <p><p>`;
       }
       if (day == 7) {
         calendar += '<tr>';
       }
-    }
+    } 
     for (let i = DNlast; i < 7; i++) calendar += '<td>&nbsp;';
     document.querySelector(`#${id} tbody`).innerHTML = calendar;
-    this.currentDate.innerHTML = `${month12[month]} ${year}`;
-    this.currentDate.dataset.month = month;
-    this.currentDate.dataset.year = year;
+    this.currentDate.innerHTML = `${month12[obj.month - 1]} ${obj.year}`;
+    this.currentDate.dataset.month = obj.month;
+    this.currentDate.dataset.year = obj.year;
 
-    this.buttonsEvent();
+
     this.dayEvent();
   }
-
-buttonsEvent() {
-    this.nextButton.addEventListener('click', this.createCalendar.bind(this, 'calendar2',
-      this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month) + 1));
-    this.prevButton.addEventListener('click', this.createCalendar.bind(this, 'calendar2',
-      this.currentDate.dataset.year, parseFloat(this.currentDate.dataset.month) - 1));
-  }
-*/
 }
 
 export default View;
