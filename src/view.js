@@ -43,7 +43,6 @@ class View extends EventEmitter {
     const isNotDay = !event.target.classList.contains('day');
 
     if (isNotDay) return;
-
     const dayId = this.day[a].id;
     const item = this.day[a].querySelector(`[data-id="${dayId}"]`);
     if (!item) {
@@ -57,14 +56,15 @@ class View extends EventEmitter {
 
   // eslint-disable-next-line class-methods-use-this
   createItem(item) {
-    const first = createElement('h2', { className: 'eve' }, item.title[0]);
-    const second = createElement('p', { className: 'dt' }, item.title[1]);
-    const third = createElement('p', { className: 'party' }, item.title[2]);
-    const fourth = createElement('p', { className: 'txt' }, item.title[3]);
+    const first = createElement('h2', { className: 'eve' }, item[0].eventName);
+    const second = createElement('p', { className: 'dt' }, item[0].eventDate);
+    const third = createElement('p', { className: 'party' }, item[0].members);
+    const fourth = createElement('p', { className: 'txt' }, item[0].description);
     const button = createElement('button', { className: 'but' }, 'Готово');
+    console.log(item[0].id);
     const total = createElement(
       'form',
-      { className: 'frm invise', 'data-id': item.id },
+      { className: 'frm invise', 'data-id': item[0].id },
       first,
       second,
       third,
@@ -85,8 +85,7 @@ class View extends EventEmitter {
     const value = [this.eve.value, this.date.value, this.members.value, this.desc.value];
     const id = Date.now();
     const key = event.target.parentNode.dataset.key;
-    this.emit('render', 123);
-    this.emit('add', value);
+   // this.emit('add', value);
 
     // так происходит запись в хранилище
     // ключ key берём из data-key="29/12/2018/4"
@@ -117,15 +116,16 @@ class View extends EventEmitter {
 
   addItem(item) {
     const items = this.createItem(item);
+    console.log(items);
     const parentForm = this.form.parentNode;
     // Добавляем значения из формы в day
-    const values = parentForm.querySelectorAll('.info p');
-    for (let i = 0; i < values.length; i++) {
-      values[i].innerHTML = item.title[i];
-    }
+    //const values = parentForm.querySelectorAll('.info p');
+    //for (let i = 0; i < values.length; i++) {
+      //values[i].innerHTML = item.title[i];
+    //}
 
     parentForm.appendChild(items);
-    parentForm.id = item.id;
+    parentForm.id = item[0].id;
   }
 
   /**
