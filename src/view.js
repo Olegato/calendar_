@@ -187,9 +187,9 @@ class View extends EventEmitter {
       let day = obj.days[i-1].day;
 
       if (i == new Date().getDate() && obj.year == new Date().getFullYear() && obj.month - 1 == new Date().getMonth()) {
-        calendar += `<td class="day today" data-key="${i}/${obj.month}/${obj.year}/${day}">${i} <div class="info"> <p><p>`;
+        calendar += `<td class="day today" data-key="${i}/${obj.month}/${obj.year}/${day}"><div class=scrollable>${i} <div class="info"> <p><p>`;
       } else {
-        calendar += `<td class="day" data-key="${i}/${obj.month}/${obj.year}/${day}">${i} <div class="info"> <p><p>`;
+        calendar += `<td class="day" data-key="${i}/${obj.month}/${obj.year}/${day}"><div class=scrollable>${i} <div class="info"> <p><p>`;
       }
       if (day == 7) {
         calendar += '<tr>';
