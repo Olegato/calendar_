@@ -32,39 +32,39 @@ class View extends EventEmitter {
 
   // вешает обработчик на дни
   dayEvent() {
-    this.day = document.getElementsByClassName('day');
-    for (let i = 0; i < this.day.length; i++) {
-      this.day[i].addEventListener('click', this.handleShow.bind(this, i));
-    }
+   this.day = document.getElementsByClassName('day');
+   this.addButton = document.querySelectorAll('.addButton');
+   for (let i = 0; i < this.addButton.length; i++) {
+    this.addButton[i].addEventListener('click', this.handleShow.bind(this, i));
+  }
+   
   }
 
   handleShow(a, event) {
-    // Если кликнули не по дню - уходим с обработчика
-    const isNotDay = !event.target.classList.contains('day');
 
-    if (isNotDay) return;
     const dayId = this.day[a].id;
-    const item = this.day[a].querySelector(`[data-id="${dayId}"]`);
-    if (!item) {
+    //const item = this.day[a].querySelector(`[data-id="${dayId}"]`);
+
       this.form.classList.remove('invise');
       this.day[a].appendChild(this.form);
-      // this.day[a].insertAdjacentElement('afterend', this.form);
-    } else {
-      item.classList.remove('invise');
-    }
+      console.log('lala')
+   }
+
+  blaListener(div, items){
+    div.addEventListener('click', () => items.classList.remove('invise'));
   }
 
   // eslint-disable-next-line class-methods-use-this
   createItem(item) {
-    const first = createElement('h2', { className: 'eve' }, item[0].eventName);
-    const second = createElement('p', { className: 'dt' }, item[0].eventDate);
-    const third = createElement('p', { className: 'party' }, item[0].members);
-    const fourth = createElement('p', { className: 'txt' }, item[0].description);
+    const first = createElement('h2', { className: 'eve' }, item[item.length-1].eventName);
+    const second = createElement('p', { className: 'dt' }, item[item.length-1].eventDate);
+    const third = createElement('p', { className: 'party' }, item[item.length-1].members);
+    const fourth = createElement('p', { className: 'txt' }, item[item.length-1].description);
     const button = createElement('button', { className: 'but' }, 'Готово');
     console.log(item[0].id);
     const total = createElement(
       'form',
-      { className: 'frm invise', 'data-id': item[0].id },
+      { className: 'frm invise', 'data-id': item[item.length-1].id },
       first,
       second,
       third,
@@ -75,6 +75,7 @@ class View extends EventEmitter {
     button.addEventListener('click', () => {
       event.preventDefault();
       total.classList.add('invise');
+      total.classList.contains('invise');//почему-то не рабоает
     });
     return total;
   }
@@ -85,7 +86,6 @@ class View extends EventEmitter {
     const value = [this.eve.value, this.date.value, this.members.value, this.desc.value];
     const id = Date.now();
     const key = event.target.parentNode.dataset.key;
-   // this.emit('add', value);
 
     // так происходит запись в хранилище
     // ключ key берём из data-key="29/12/2018/4"
@@ -116,15 +116,30 @@ class View extends EventEmitter {
 
   addItem(item) {
     const items = this.createItem(item);
-    console.log(items);
     const parentForm = this.form.parentNode;
-    // Добавляем значения из формы в day
-    //const values = parentForm.querySelectorAll('.info p');
-    //for (let i = 0; i < values.length; i++) {
-      //values[i].innerHTML = item.title[i];
-    //}
+    const valueEvent = item[item.length - 1].eventName;
+    const valueMembers = item[item.length - 1].members;
+    
+    const values = parentForm.querySelector('.scrollable');
+        
+    let div = document.createElement(`div`);
+    div.classList.add('info');
 
-    parentForm.appendChild(items);
+    let first = document.createElement('p');
+    let second = document.createElement('p');
+
+    first.innerHTML = valueEvent;
+    second.innerHTML = valueMembers;
+
+    div.appendChild(first);
+    div.appendChild(second);
+    values.appendChild(div);
+
+    div.appendChild(items);
+
+    this.blaListener(div, items);
+
+    //parentForm.appendChild(items);
     parentForm.id = item[0].id;
   }
 
@@ -134,45 +149,8 @@ class View extends EventEmitter {
    * @param {*} id id таблицы для календаря
    * @param {*} year год в календаре
    * @param {*} month1 месяц в календаре
-   */
-
-  createCalendar(id, year, month1) {
-    const Dlast = new Date(year, month1 + 1, 0).getDate();
-    const D = new Date(year, month1, Dlast);
-    const DNlast = new Date(D.getFullYear(), D.getMonth(), Dlast).getDay();
-    const DNfirst = new Date(D.getFullYear(), D.getMonth(), 1).getDay();
-    let calendar = '<tr>';
-
-    const month12 = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
-    if (DNfirst != 0) {
-      for (let i = 1; i < DNfirst; i++) calendar += '<td>';
-    } else {
-      for (let i = 0; i < 6; i++) calendar += '<td>';
-    }
-
-    for (let i = 1; i <= Dlast; i++) {
-      let day = new Date(D.getFullYear(), D.getMonth(), i).getDay();
-      if (day == 0) {
-        day = 7;
-      }
-      if (i == new Date().getDate() && D.getFullYear() == new Date().getFullYear() && D.getMonth() == new Date().getMonth()) {
-        calendar += `<td class="day today" data-key="${i}/${D.getMonth() + 1}/${D.getFullYear()}/${day}">${i} <div class="info"> <p><p>`;
-      } else {
-        calendar += `<td class="day" data-key="${i}/${D.getMonth() + 1}/${D.getFullYear()}/${day}">${i} <div class="info"> <p><p>`;
-      }
-      if (day == 7) {
-        calendar += '<tr>';
-      } 
-    }
-    for (let i = DNlast; i < 7; i++) calendar += '<td>&nbsp;';
-    document.querySelector(`#${id} tbody`).innerHTML = calendar;
-    this.currentDate.innerHTML = `${month12[D.getMonth()]} ${D.getFullYear()}`;
-    this.currentDate.dataset.month = month1;
-    this.currentDate.dataset.year = year;
-
-    //this.buttonsEvent();
-    this.dayEvent();
-  }
+   *
+  */
   
   createCalendarModel(id, obj) {
     const Dlast = Object.keys(obj.days).length;
@@ -182,14 +160,16 @@ class View extends EventEmitter {
 
     const month12 = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
     for (let i = 1; i < DNfirst; i++) calendar += '<td>';
+    
+    
 
     for (let i = 1; i <= Dlast; i++) {
       let day = obj.days[i-1].day;
-
+      let div = `<div class=scrollable data-key="${i}/${obj.month}/${obj.year}/${day}">`
       if (i == new Date().getDate() && obj.year == new Date().getFullYear() && obj.month - 1 == new Date().getMonth()) {
-        calendar += `<td class="day today" data-key="${i}/${obj.month}/${obj.year}/${day}"><div class=scrollable>${i} <div class="info"> <p><p>`;
+        calendar += `<td class="day today" data-key="${i}/${obj.month}/${obj.year}/${day}">${i}<button class='addButton'>+</button>${div}`;
       } else {
-        calendar += `<td class="day" data-key="${i}/${obj.month}/${obj.year}/${day}"><div class=scrollable>${i} <div class="info"> <p><p>`;
+        calendar += `<td class="day" data-key="${i}/${obj.month}/${obj.year}/${day}">${i}<button class='addButton'>+</button>${div}`;
       }
       if (day == 7) {
         calendar += '<tr>';
@@ -200,7 +180,6 @@ class View extends EventEmitter {
     this.currentDate.innerHTML = `${month12[obj.month - 1]} ${obj.year}`;
     this.currentDate.dataset.month = obj.month;
     this.currentDate.dataset.year = obj.year;
-
 
     this.dayEvent();
   }
