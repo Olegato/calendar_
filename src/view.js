@@ -1,4 +1,5 @@
 import { EventEmitter, createElement } from './helpers';
+import { runInThisContext } from 'vm';
 
 class View extends EventEmitter {
   constructor() {
@@ -13,6 +14,7 @@ class View extends EventEmitter {
     this.nextButton = document.getElementById('next');
     this.desc = document.getElementById('textyo');
     this.currentDate = document.querySelector('.current-month');
+    this.cancel = document.getElementById('clear');
     
     //window.onload = this.createCalendar('calendar2', new Date().getFullYear(), new Date().getMonth());
 
@@ -25,8 +27,15 @@ class View extends EventEmitter {
 
     this.form.addEventListener('submit', this.handleAdd.bind(this));
 
+    this.cancel.addEventListener('click', this.cancelForm.bind(this) )
+
     this.nextButton.addEventListener('click', this.emit.bind(this,'render', 'next'));
     this.prevButton.addEventListener('click', this.emit.bind(this, 'render','previous'));
+  }
+
+  cancelForm(){
+    event.preventDefault();
+    this.form.classList.add('invise');
   }
   
 
@@ -81,7 +90,12 @@ class View extends EventEmitter {
   handleAdd(event) {
     event.preventDefault();
 
-    const value = [this.eve.value, this.date.value, this.members.value, this.desc.value];
+    if(!this.eve.value){
+      alert('Необходимо ввести название задачи!');
+      return
+    }
+
+    //const value = [this.eve.value, this.date.value, this.members.value, this.desc.value];
     const id = Date.now();
     const key = event.target.parentNode.dataset.key;
 
