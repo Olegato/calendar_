@@ -47,7 +47,6 @@ class View extends EventEmitter {
 
       this.form.classList.remove('invise');
       this.day[a].appendChild(this.form);
-      console.log('lala')
    }
 
   blaListener(div, items){
@@ -56,15 +55,14 @@ class View extends EventEmitter {
 
   // eslint-disable-next-line class-methods-use-this
   createItem(item) {
-    const first = createElement('h2', { className: 'eve' }, item[item.length-1].eventName);
-    const second = createElement('p', { className: 'dt' }, item[item.length-1].eventDate);
-    const third = createElement('p', { className: 'party' }, item[item.length-1].members);
-    const fourth = createElement('p', { className: 'txt' }, item[item.length-1].description);
+    const first = createElement('h2', { className: 'eve' }, item.eventName);
+    const second = createElement('p', { className: 'dt' }, item.eventDate);
+    const third = createElement('p', { className: 'party' }, item.members);
+    const fourth = createElement('p', { className: 'txt' }, item.description);
     const button = createElement('button', { className: 'but' }, 'Готово');
-    console.log(item[0].id);
     const total = createElement(
       'form',
-      { className: 'frm invise', 'data-id': item[item.length-1].id },
+      { className: 'frm invise', 'data-id': item.id },
       first,
       second,
       third,
@@ -102,7 +100,7 @@ class View extends EventEmitter {
       });
 
     // так читаем список событий из хранилища
-    this.emit('getAllEventsOfDay', event.target.parentNode.dataset.key);
+    //this.emit('getAllEventsOfDay', event.target.parentNode.dataset.key);
 
 
     this.form.classList.add('invise');
@@ -115,7 +113,8 @@ class View extends EventEmitter {
   }
 
   addItem(item) {
-    const items = this.createItem(item);
+    console.log(item);
+    const items = this.createItem(item[item.length-1]);
     const parentForm = this.form.parentNode;
     const valueEvent = item[item.length - 1].eventName;
     const valueMembers = item[item.length - 1].members;
@@ -162,14 +161,16 @@ class View extends EventEmitter {
     for (let i = 1; i < DNfirst; i++) calendar += '<td>';
     
     
-
+    let keys = [];
     for (let i = 1; i <= Dlast; i++) {
       let day = obj.days[i-1].day;
       let div = `<div class=scrollable data-key="${i}/${obj.month}/${obj.year}/${day}">`
       if (i == new Date().getDate() && obj.year == new Date().getFullYear() && obj.month - 1 == new Date().getMonth()) {
         calendar += `<td class="day today" data-key="${i}/${obj.month}/${obj.year}/${day}">${i}<button class='addButton'>+</button>${div}`;
+        keys.push(`${i}/${obj.month}/${obj.year}/${day}`);
       } else {
         calendar += `<td class="day" data-key="${i}/${obj.month}/${obj.year}/${day}">${i}<button class='addButton'>+</button>${div}`;
+        keys.push(`${i}/${obj.month}/${obj.year}/${day}`);
       }
       if (day == 7) {
         calendar += '<tr>';
@@ -182,6 +183,41 @@ class View extends EventEmitter {
     this.currentDate.dataset.year = obj.year;
 
     this.dayEvent();
+    this.emit('getAllEventsOfDay', keys);
+  }
+
+  addLoad(item, a){
+    
+    let first = document.createElement('p');
+    for(let i = 0; i < item.length; i++){
+    /*first.innerHTML = item[i].eventName;
+    console.log(first);
+    console.log(this.day[a]);
+    this.day[a].appendChild(first);*/
+    let items = this.createItem(item[i]);
+    let valueEvent = item[i].eventName;
+    let valueMembers = item[i].members;
+    
+    let values = this.day[a].querySelector('.scrollable');
+        
+    let div = document.createElement(`div`);
+    div.classList.add('info');
+
+    let first = document.createElement('p');
+    let second = document.createElement('p');
+
+    first.innerHTML = valueEvent;
+    second.innerHTML = valueMembers;
+
+    div.appendChild(first);
+    div.appendChild(second);
+    values.appendChild(div);
+
+    div.appendChild(items);
+
+    this.blaListener(div, items);        
+    }
+    
   }
 }
 

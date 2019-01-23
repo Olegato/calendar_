@@ -45,7 +45,11 @@ class Controller {
 
   // TODO: написать этот метод
   getEvents(query) {
-    const events = this.model.getAllEventsOfDay(query);
+    let events = [];
+    for(let i = 0; i < query.length; i++){
+    events.push(this.model.getAllEventsOfDay(query[i]));
+    this.view.addLoad(events[i], i);
+    }
     //console.log(query, events);
   }
 }
